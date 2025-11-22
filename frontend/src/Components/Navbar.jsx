@@ -80,7 +80,7 @@ export default function Navbar() {
               <div className="w-10 h-10 rounded-full overflow-hidden bg-white/20 flex items-center justify-center border-2 border-yellow-300 shadow-lg">
                 {user.profileImage ? (
                   <img 
-                    src={user.profileImage.startsWith('http') ? user.profileImage : `http://localhost:5000${user.profileImage}`} 
+                    src={user.profileImage.startsWith('http') ? user.profileImage : `https://electromart-backend-m2oz.onrender.com${user.profileImage}`} 
                     alt={user.name} 
                     className="w-full h-full object-cover"
                   />

@@ -19,8 +19,8 @@ export default function AuthPage() {
 
     try {
       const url = isSignup
-        ? "http://localhost:5000/api/auth/signup"
-        : "http://localhost:5000/api/auth/login";
+        ? "https://electromart-backend-m2oz.onrender.com/api/auth/signup"
+        : "https://electromart-backend-m2oz.onrender.com/api/auth/login";
 
       const response = await axios.post(url, formData);
 

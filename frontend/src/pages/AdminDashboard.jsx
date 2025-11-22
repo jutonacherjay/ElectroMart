@@ -22,7 +22,7 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await axios.get("http://localhost:5000/api/admin/stats", {
+      const res = await axios.get("https://electromart-backend-m2oz.onrender.com/api/admin/stats", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setStats(res.data);
@@ -264,7 +264,7 @@ export default function AdminDashboard() {
               <div key={product._id} className="border border-gray-200 rounded-lg p-4 hover:shadow-xl transition transform hover:scale-105">
                 {product.image && (
                   <img 
-                    src={`http://localhost:5000${product.image}`}
+                    src={`https://electromart-backend-m2oz.onrender.com${product.image}`}
                     alt={product.name}
                     className="w-full h-40 object-cover rounded-lg mb-3"
                   />

@@ -48,7 +48,7 @@ export default function AllProducts() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/products/all");
+      const res = await axios.get("https://electromart-backend-m2oz.onrender.com/api/products/all");
       setProducts(res.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -136,7 +136,7 @@ export default function AllProducts() {
                 <div className="relative overflow-hidden bg-gray-100 h-56">
                   {product.image ? (
                     <img 
-                      src={`http://localhost:5000${product.image}`}
+                      src={`https://electromart-backend-m2oz.onrender.com${product.image}`}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />

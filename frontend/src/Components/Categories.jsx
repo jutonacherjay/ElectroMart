@@ -46,7 +46,7 @@ export default function Categories() {
     setLoading(true);
     
     try {
-      const res = await axios.get(`http://localhost:5000/api/products/category/${categoryName}`);
+      const res = await axios.get(`https://electromart-backend-m2oz.onrender.com/api/products/category/${categoryName}`);
       setProducts(res.data);
       console.log('Products loaded:', res.data); // DEBUG
     } catch (error) {
@@ -129,7 +129,7 @@ export default function Categories() {
               >
                 {product.image ? (
                   <img 
-                    src={`http://localhost:5000${product.image}`}
+                    src={`https://electromart-backend-m2oz.onrender.com${product.image}`}
                     alt={product.name}
                     className="w-full h-48 object-cover"
                   />

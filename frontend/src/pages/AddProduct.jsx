@@ -62,7 +62,7 @@ export default function AddProduct() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/products/add",
+        "https://electromart-backend-m2oz.onrender.com/api/products/add",
         formData,
         {
           headers: {

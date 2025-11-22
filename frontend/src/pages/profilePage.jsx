@@ -23,7 +23,7 @@ export default function ProfilePage() {
       
       if (token) {
         try {
-          const res = await axios.get("http://localhost:5000/api/profile", {
+          const res = await axios.get("https://electromart-backend-m2oz.onrender.com/api/profile", {
             headers: { Authorization: `Bearer ${token}` }
           });
           
@@ -36,10 +36,10 @@ export default function ProfilePage() {
             email: userData?.email || "",
             phone: userData?.phone || "",
           });
-          setImagePreview(userData?.profileImage ? `http://localhost:5000${userData.profileImage}` : null);
+          setImagePreview(userData?.profileImage ? `https://electromart-backend-m2oz.onrender.com${userData.profileImage}` : null);
 
           // Fetch user's products from database
-          const productsRes = await axios.get("http://localhost:5000/api/products/my-products", {
+          const productsRes = await axios.get("https://electromart-backend-m2oz.onrender.com/api/products/my-products", {
             headers: { Authorization: `Bearer ${token}` }
           });
           setProducts(productsRes.data);
@@ -110,7 +110,7 @@ export default function ProfilePage() {
 
       try {
         const res = await axios.put(
-          "http://localhost:5000/api/profile",
+          "https://electromart-backend-m2oz.onrender.com/api/profile",
           formData,
           {
             headers: {
@@ -127,7 +127,7 @@ export default function ProfilePage() {
         };
         setUser(updatedUser);
         localStorage.setItem("user", JSON.stringify(updatedUser));
-        setImagePreview(res.data.user.profileImage ? `http://localhost:5000${res.data.user.profileImage}` : null);
+        setImagePreview(res.data.user.profileImage ? `https://electromart-backend-m2oz.onrender.com${res.data.user.profileImage}` : null);
       } catch (backendError) {
         console.log("Backend error:", backendError);
         const updatedUser = { ...user, ...editForm, profileImage: imagePreview };
@@ -285,7 +285,7 @@ export default function ProfilePage() {
               <div key={p._id} className="border border-gray-200 p-4 rounded-lg hover:shadow-lg transition">
                 {p.image && (
                   <img 
-                    src={`http://localhost:5000${p.image}`} 
+                    src={`https://electromart-backend-m2oz.onrender.com${p.image}`} 
                     alt={p.name}
                     className="w-full h-48 object-cover rounded-lg mb-3"
                   />

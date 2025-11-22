@@ -13,7 +13,7 @@ export default function SellerDashboard() {
   const fetchNotifications = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/notifications/seller", {
+      const res = await axios.get("https://electromart-backend-m2oz.onrender.com/api/notifications/seller", {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -33,7 +33,7 @@ export default function SellerDashboard() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:5000/api/notifications/${notificationId}/read`,
+        `https://electromart-backend-m2oz.onrender.com/api/notifications/${notificationId}/read`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

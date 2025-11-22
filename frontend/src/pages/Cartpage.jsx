@@ -67,7 +67,7 @@ export default function CartPage() {
       const user = JSON.parse(localStorage.getItem("user"));
       
       if (token && product.seller?.userId) {
-        await axios.post('http://localhost:5000/api/notifications/whatsapp-contact', {
+        await axios.post('https://electromart-backend-m2oz.onrender.com/api/notifications/whatsapp-contact', {
           sellerId: product.seller.userId,
           productName: product.name,
           productId: product._id,
@@ -132,7 +132,7 @@ export default function CartPage() {
                   {/* Product Image */}
                   {item.image ? (
                     <img
-                      src={`http://localhost:5000${item.image}`}
+                      src={`https://electromart-backend-m2oz.onrender.com${item.image}`}
                       alt={item.name}
                       className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
                     />
