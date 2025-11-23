@@ -12,7 +12,14 @@ export default function CartPage() {
 
   const loadCart = () => {
     try {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.email) {
+        setCartItems([]);
+        return;
+      }
+      
+      const cartKey = `cart_${user.email}`;
+      const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
       console.log('Loading cart:', cart);
       setCartItems(cart);
     } catch (error) {
@@ -22,16 +29,20 @@ export default function CartPage() {
   };
 
   const updateQuantity = (productId, quantity) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.email) return;
+    
+    const cartKey = `cart_${user.email}`;
+    const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
     
     if (quantity <= 0) {
       const updatedCart = cart.filter(item => item._id !== productId);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      localStorage.setItem(cartKey, JSON.stringify(updatedCart));
     } else {
       const updatedCart = cart.map(item =>
         item._id === productId ? { ...item, quantity } : item
       );
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      localStorage.setItem(cartKey, JSON.stringify(updatedCart));
     }
     
     window.dispatchEvent(new Event("cartUpdated"));
@@ -39,15 +50,23 @@ export default function CartPage() {
   };
 
   const removeFromCart = (productId) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.email) return;
+    
+    const cartKey = `cart_${user.email}`;
+    const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
     const updatedCart = cart.filter(item => item._id !== productId);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    localStorage.setItem(cartKey, JSON.stringify(updatedCart));
     window.dispatchEvent(new Event("cartUpdated"));
     loadCart();
   };
 
   const clearCart = () => {
-    localStorage.setItem("cart", JSON.stringify([]));
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.email) return;
+    
+    const cartKey = `cart_${user.email}`;
+    localStorage.setItem(cartKey, JSON.stringify([]));
     window.dispatchEvent(new Event("cartUpdated"));
     loadCart();
   };

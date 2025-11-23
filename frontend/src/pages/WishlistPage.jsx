@@ -10,20 +10,38 @@ export default function WishlistPage() {
   }, []);
 
   const loadWishlist = () => {
-    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.email) {
+      setWishlistItems([]);
+      return;
+    }
+    
+    const wishlistKey = `wishlist_${user.email}`;
+    const wishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
     setWishlistItems(wishlist);
   };
 
   const removeFromWishlist = (productId) => {
-    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.email) return;
+    
+    const wishlistKey = `wishlist_${user.email}`;
+    const wishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
     const updated = wishlist.filter(item => item._id !== productId);
-    localStorage.setItem("wishlist", JSON.stringify(updated));
+    localStorage.setItem(wishlistKey, JSON.stringify(updated));
     window.dispatchEvent(new Event("wishlistUpdated"));
     loadWishlist();
   };
 
   const addToCart = (product) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.email) {
+      alert('Please login first');
+      return;
+    }
+    
+    const cartKey = `cart_${user.email}`;
+    const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
     const existingIndex = cart.findIndex(item => item._id === product._id);
     
     if (existingIndex > -1) {
@@ -32,10 +50,9 @@ export default function WishlistPage() {
       cart.push({ ...product, quantity: 1 });
     }
     
-    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem(cartKey, JSON.stringify(cart));
     window.dispatchEvent(new Event("cartUpdated"));
     
-    // Remove from wishlist after adding to cart
     removeFromWishlist(product._id);
   };
 

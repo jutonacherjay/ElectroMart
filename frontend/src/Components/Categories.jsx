@@ -67,33 +67,36 @@ export default function Categories() {
   };
 
   const handleAddToCart = (product) => {
-    console.log('Adding to cart:', product); // DEBUG
+    console.log('Adding to cart:', product);
     
-    // Get existing cart
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    console.log('Current cart:', cart); // DEBUG
+    // Get current user
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.email) {
+      alert('Please login first');
+      return;
+    }
     
-    // Check if product already in cart
+    // Get user-specific cart
+    const cartKey = `cart_${user.email}`;
+    const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    console.log('Current cart:', cart);
+    
     const existingIndex = cart.findIndex(item => item._id === product._id);
     
     if (existingIndex > -1) {
-      // Increase quantity
       cart[existingIndex].quantity += 1;
-      console.log('Increased quantity'); // DEBUG
+      console.log('Increased quantity');
     } else {
-      // Add new product
       cart.push({ ...product, quantity: 1 });
-      console.log('Added new product'); // DEBUG
+      console.log('Added new product');
     }
     
-    // Save to localStorage
-    localStorage.setItem("cart", JSON.stringify(cart));
-    console.log('Cart saved:', cart); // DEBUG
+    // Save to user-specific cart
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+    console.log('Cart saved:', cart);
     
-    // Trigger cart update event
     window.dispatchEvent(new Event("cartUpdated"));
     
-    // Show feedback
     setAddedToCart((prev) => ({ ...prev, [product._id]: true }));
     
     setTimeout(() => {
@@ -102,18 +105,25 @@ export default function Categories() {
   };
 
   const toggleWishlist = (product) => {
-    const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    // Get current user
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.email) {
+      alert('Please login first');
+      return;
+    }
+    
+    // Get user-specific wishlist
+    const wishlistKey = `wishlist_${user.email}`;
+    const savedWishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
     const exists = savedWishlist.find(item => item._id === product._id);
     
     if (exists) {
-      // Remove from wishlist
       const updated = savedWishlist.filter(item => item._id !== product._id);
-      localStorage.setItem("wishlist", JSON.stringify(updated));
+      localStorage.setItem(wishlistKey, JSON.stringify(updated));
       setWishlist(updated);
     } else {
-      // Add to wishlist
       const updated = [...savedWishlist, product];
-      localStorage.setItem("wishlist", JSON.stringify(updated));
+      localStorage.setItem(wishlistKey, JSON.stringify(updated));
       setWishlist(updated);
     }
     

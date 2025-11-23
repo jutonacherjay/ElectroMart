@@ -12,14 +12,28 @@ export default function Navbar() {
 
     // Load cart count
     const updateCartCount = () => {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.email) {
+        setCartCount(0);
+        return;
+      }
+      
+      const cartKey = `cart_${user.email}`;
+      const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
       const count = cart.reduce((sum, item) => sum + item.quantity, 0);
       setCartCount(count);
     };
 
     // Load wishlist count
     const updateWishlistCount = () => {
-      const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.email) {
+        setWishlistCount(0);
+        return;
+      }
+      
+      const wishlistKey = `wishlist_${user.email}`;
+      const wishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
       setWishlistCount(wishlist.length);
     };
 
