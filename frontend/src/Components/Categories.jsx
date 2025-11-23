@@ -48,7 +48,10 @@ export default function Categories() {
     try {
       const res = await axios.get(`https://electromart-backend-m2oz.onrender.com/api/products/category/${categoryName}`);
       setProducts(res.data);
-      console.log('Products loaded:', res.data); // DEBUG
+      console.log('Products loaded:', res.data);
+      
+      const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      setWishlist(savedWishlist);
     } catch (error) {
       console.error("Error fetching products:", error);
       setProducts([]);
@@ -98,6 +101,29 @@ export default function Categories() {
     }, 2000);
   };
 
+  const toggleWishlist = (product) => {
+    const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    const exists = savedWishlist.find(item => item._id === product._id);
+    
+    if (exists) {
+      // Remove from wishlist
+      const updated = savedWishlist.filter(item => item._id !== product._id);
+      localStorage.setItem("wishlist", JSON.stringify(updated));
+      setWishlist(updated);
+    } else {
+      // Add to wishlist
+      const updated = [...savedWishlist, product];
+      localStorage.setItem("wishlist", JSON.stringify(updated));
+      setWishlist(updated);
+    }
+    
+    window.dispatchEvent(new Event("wishlistUpdated"));
+  };
+
+  const isInWishlist = (productId) => {
+    return wishlist.some(item => item._id === productId);
+  };
+
   if (selectedCategory) {
     return (
       <div className="p-6 max-w-7xl mx-auto">
@@ -140,7 +166,26 @@ export default function Categories() {
                 )}
                 
                 <div className="p-4">
-                  <h3 className="font-bold text-lg mb-2 line-clamp-2">{product.name}</h3>
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="font-bold text-lg line-clamp-2 flex-1">{product.name}</h3>
+                    
+                    {/* Wishlist Heart Button */}
+                    <button
+                      onClick={() => toggleWishlist(product)}
+                      className="ml-2 p-2 rounded-full hover:bg-gray-100 transition"
+                      title={isInWishlist(product._id) ? "Remove from wishlist" : "Add to wishlist"}
+                    >
+                      <svg 
+                        className={`w-6 h-6 ${isInWishlist(product._id) ? 'fill-red-500 text-red-500' : 'fill-none text-gray-400'}`}
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                    </button>
+                  </div>
+                  
                   <p className="text-2xl font-bold text-blue-600 mb-2">৳{product.price}</p>
                   
                   {product.description && (

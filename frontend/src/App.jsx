@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Categories from "./components/Categories";
+import Navbar from "./Components/Navbar";
+import Hero from "./Components/Hero";
+import Categories from "./Components/Categories";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/profilePage";
 import AddProduct from "./pages/AddProduct";

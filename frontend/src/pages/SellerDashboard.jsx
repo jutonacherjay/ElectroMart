@@ -33,7 +33,7 @@ export default function SellerDashboard() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `https://electromart-backend-m2oz.onrender.com/api/notifications/${notificationId}/read`,
+        `http://localhost:5000/api/notifications/${notificationId}/read`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
