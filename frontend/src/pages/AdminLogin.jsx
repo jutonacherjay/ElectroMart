@@ -95,7 +95,7 @@ export default function AdminLogin() {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Default Credentials: <br />
+              {/* Default Credentials: <br /> */}
               {/* <span className="font-mono bg-gray-100 px-2 py-1 rounded">admin@electromart.com</span>
               <br />
               <span className="font-mono bg-gray-100 px-2 py-1 rounded">admin123</span> */}
