@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "./Components/Navbar";
 import Hero from "./Components/Hero";
 import Categories from "./Components/Categories";
-// import AuthPage from "./pages/AuthPage";  // TEMPORARILY COMMENTED OUT
+import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
 import AddProduct from "./pages/AddProduct";
 import AllProducts from "./pages/AllProducts";
@@ -13,21 +13,14 @@ import SellerDashboard from "./pages/SellerDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 
-// Placeholder Auth Component
-function AuthPage() {
-  return <div>Auth Page</div>;
-}
-
 function AppContent() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   
-  // Check if current path is admin route
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   useEffect(() => {
-    // Only access localStorage after component mounts (in browser)
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       try {
@@ -40,20 +33,17 @@ function AppContent() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="p-8">Loading...</div>;
   }
 
   return (
     <>
-      {/* Show user navbar only if user is logged in AND not on admin routes */}
       {user && !isAdminRoute && <Navbar />}
       
       <Routes>
-        {/* Admin Routes - accessible without user login */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
-        {/* User Routes */}
         {!user && <Route path="*" element={<AuthPage />} />}
         {user && (
           <>
