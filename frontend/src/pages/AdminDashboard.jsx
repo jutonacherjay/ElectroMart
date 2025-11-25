@@ -9,6 +9,7 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
@@ -44,10 +45,10 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className={`min-h-screen flex items-center justify-center ${darkMode ? "bg-gray-900" : "bg-gray-100"}`}>
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600 mb-4"></div>
-          <p className="text-xl text-gray-600">Loading dashboard...</p>
+          <p className={`text-xl ${darkMode ? "text-gray-300" : "text-gray-600"}`}>Loading dashboard...</p>
         </div>
       </div>
     );
@@ -73,7 +74,7 @@ export default function AdminDashboard() {
       ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={darkMode ? "min-h-screen bg-gray-900" : "min-h-screen bg-gray-50"}>
       {/* Top Navigation */}
       <nav className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -87,15 +88,26 @@ export default function AdminDashboard() {
             </div>
           </div>
           
-          <button
-            onClick={handleLogout}
-            className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg font-semibold transition flex items-center gap-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            Logout
-          </button>
+          <div className="flex items-center gap-4">
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg font-semibold transition flex items-center gap-2"
+            >
+              {darkMode ? "☀️ Light" : "🌙 Dark"}
+            </button>
+
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg font-semibold transition flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Logout
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -151,14 +163,14 @@ export default function AdminDashboard() {
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Bar Chart - Products per Category */}
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Products per Category</h2>
+          <div className={`rounded-xl shadow-md p-6 ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+            <h2 className={`text-2xl font-bold mb-4 ${darkMode ? "text-gray-100" : "text-gray-800"}`}>Products per Category</h2>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={categoryChartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} fontSize={12} />
-                <YAxis />
-                <Tooltip />
+                <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? "#444" : "#ccc"} />
+                <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} fontSize={12} stroke={darkMode ? "#999" : "#333"} />
+                <YAxis stroke={darkMode ? "#999" : "#333"} />
+                <Tooltip contentStyle={darkMode ? { backgroundColor: "#333", border: "none" } : {}} />
                 <Legend />
                 <Bar dataKey="products" fill="#3B82F6" />
               </BarChart>
@@ -166,8 +178,8 @@ export default function AdminDashboard() {
           </div>
 
           {/* Pie Chart - Top 5 Categories */}
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Top 5 Categories Distribution</h2>
+          <div className={`rounded-xl shadow-md p-6 ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+            <h2 className={`text-2xl font-bold mb-4 ${darkMode ? "text-gray-100" : "text-gray-800"}`}>Top 5 Categories Distribution</h2>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
@@ -184,15 +196,15 @@ export default function AdminDashboard() {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle={darkMode ? { backgroundColor: "#333", border: "none" } : {}} />
               </PieChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Line Chart - User Registration Trend */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <div className={`rounded-xl shadow-md p-6 mb-8 ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+          <h2 className={`text-2xl font-bold mb-4 flex items-center gap-2 ${darkMode ? "text-gray-100" : "text-gray-800"}`}>
             <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
@@ -200,10 +212,10 @@ export default function AdminDashboard() {
           </h2>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={userTrendData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? "#444" : "#ccc"} />
+              <XAxis dataKey="month" stroke={darkMode ? "#999" : "#333"} />
+              <YAxis stroke={darkMode ? "#999" : "#333"} />
+              <Tooltip contentStyle={darkMode ? { backgroundColor: "#333", border: "none" } : {}} />
               <Legend />
               <Line 
                 type="monotone" 
@@ -218,8 +230,8 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent Users */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <div className={`rounded-xl shadow-md p-6 mb-8 ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+          <h2 className={`text-2xl font-bold mb-4 flex items-center gap-2 ${darkMode ? "text-gray-100" : "text-gray-800"}`}>
             <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
@@ -228,20 +240,20 @@ export default function AdminDashboard() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b-2 border-gray-200 bg-gray-50">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Name</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Email</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Phone</th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Joined</th>
+                <tr className={`border-b-2 ${darkMode ? "border-gray-700 bg-gray-700" : "border-gray-200 bg-gray-50"}`}>
+                  <th className={`text-left py-3 px-4 font-semibold ${darkMode ? "text-gray-100" : "text-gray-700"}`}>Name</th>
+                  <th className={`text-left py-3 px-4 font-semibold ${darkMode ? "text-gray-100" : "text-gray-700"}`}>Email</th>
+                  <th className={`text-left py-3 px-4 font-semibold ${darkMode ? "text-gray-100" : "text-gray-700"}`}>Phone</th>
+                  <th className={`text-left py-3 px-4 font-semibold ${darkMode ? "text-gray-100" : "text-gray-700"}`}>Joined</th>
                 </tr>
               </thead>
               <tbody>
                 {stats?.recentUsers?.map((user) => (
-                  <tr key={user._id} className="border-b border-gray-100 hover:bg-blue-50 transition">
-                    <td className="py-3 px-4 font-medium">{user.name}</td>
-                    <td className="py-3 px-4">{user.email}</td>
-                    <td className="py-3 px-4">{user.phone || "N/A"}</td>
-                    <td className="py-3 px-4">
+                  <tr key={user._id} className={`border-b ${darkMode ? "border-gray-700 hover:bg-gray-700" : "border-gray-100 hover:bg-blue-50"} transition`}>
+                    <td className={`py-3 px-4 font-medium ${darkMode ? "text-gray-100" : ""}`}>{user.name}</td>
+                    <td className={`py-3 px-4 ${darkMode ? "text-gray-300" : ""}`}>{user.email}</td>
+                    <td className={`py-3 px-4 ${darkMode ? "text-gray-300" : ""}`}>{user.phone || "N/A"}</td>
+                    <td className={`py-3 px-4 ${darkMode ? "text-gray-300" : ""}`}>
                       {new Date(user.createdAt).toLocaleDateString()}
                     </td>
                   </tr>
@@ -252,8 +264,8 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent Products */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <div className={`rounded-xl shadow-md p-6 ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+          <h2 className={`text-2xl font-bold mb-4 flex items-center gap-2 ${darkMode ? "text-gray-100" : "text-gray-800"}`}>
             <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
@@ -261,7 +273,7 @@ export default function AdminDashboard() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {stats?.recentProducts?.map((product) => (
-              <div key={product._id} className="border border-gray-200 rounded-lg p-4 hover:shadow-xl transition transform hover:scale-105">
+              <div key={product._id} className={`border rounded-lg p-4 hover:shadow-xl transition transform hover:scale-105 ${darkMode ? "border-gray-700 bg-gray-700" : "border-gray-200"}`}>
                 {product.image && (
                   <img 
                     src={`https://electromart-backend-m2oz.onrender.com${product.image}`}
@@ -269,9 +281,9 @@ export default function AdminDashboard() {
                     className="w-full h-40 object-cover rounded-lg mb-3"
                   />
                 )}
-                <h3 className="font-bold text-lg mb-1">{product.name}</h3>
+                <h3 className={`font-bold text-lg mb-1 ${darkMode ? "text-gray-100" : ""}`}>{product.name}</h3>
                 <p className="text-indigo-600 font-bold text-xl mb-1">৳{product.price}</p>
-                <p className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded inline-block">{product.category}</p>
+                <p className={`text-sm px-2 py-1 rounded inline-block ${darkMode ? "bg-gray-600 text-gray-100" : "bg-gray-100 text-gray-600"}`}>{product.category}</p>
               </div>
             ))}
           </div>
