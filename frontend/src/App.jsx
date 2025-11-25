@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "./Components/Navbar";
 import Hero from "./Components/Hero";
 import Categories from "./Components/Categories";
-import AuthPage from "./pages/AuthPage";
+// import AuthPage from "./pages/AuthPage";  // TEMPORARILY COMMENTED OUT
 import ProfilePage from "./pages/ProfilePage";
 import AddProduct from "./pages/AddProduct";
 import AllProducts from "./pages/AllProducts";
@@ -12,6 +12,11 @@ import WishlistPage from "./pages/WishlistPage";
 import SellerDashboard from "./pages/SellerDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+
+// Placeholder Auth Component
+function AuthPage() {
+  return <div>Auth Page</div>;
+}
 
 function AppContent() {
   const [user, setUser] = useState(null);
