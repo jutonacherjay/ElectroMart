@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import Navbar from "./Components/Navbar";
 import Hero from "./Components/Hero";
 import Categories from "./Components/Categories";
-import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
 import AddProduct from "./pages/AddProduct";
 import AllProducts from "./pages/AllProducts";
