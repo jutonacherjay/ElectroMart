@@ -3,7 +3,7 @@ import Navbar from "./Components/Navbar";
 import Hero from "./Components/Hero";
 import Categories from "./Components/Categories";
 import AuthPage from "./pages/AuthPage";
-import ProfilePage from "./pages/profilePage";
+import ProfilePage from "./pages/ProfilePage";
 import AddProduct from "./pages/AddProduct";
 import AllProducts from "./pages/AllProducts";
 import CartPage from "./pages/CartPage";
@@ -47,6 +47,8 @@ function AppContent() {
             <Route path="/add-product" element={<AddProduct />} />
             <Route path="/all-products" element={<AllProducts />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/wishlist-page" element={<WishlistPage/>} />
+            <Route path="/seller-dashboard" element={<SellerDashboard/>} />
           </>
         )}
       </Routes>
