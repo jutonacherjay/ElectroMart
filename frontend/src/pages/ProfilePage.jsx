@@ -275,12 +275,20 @@ export default function ProfilePage() {
           <p className="text-sm sm:text-base text-green-50 mb-3 sm:mb-4">
             Have something to sell? Add your products and reach thousands of buyers!
           </p>
-          <Link
-            to="/add-product"
-            className="inline-block w-full sm:w-auto text-center bg-white text-green-700 hover:bg-green-50 px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base"
-          >
-            + Add Product for Sale
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+            <Link
+              to="/add-product"
+              className="inline-block w-full sm:w-auto text-center bg-white text-green-700 hover:bg-green-50 px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base"
+            >
+              + Add Product for Sale
+            </Link>
+            <Link
+              to="/seller-dashboard"
+              className="inline-block w-full sm:w-auto text-center bg-yellow-500 text-white hover:bg-yellow-600 px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base"
+            >
+              📊 My Dashboard
+            </Link>
+          </div>
         </div>
 
         {/* My Products Card */}
