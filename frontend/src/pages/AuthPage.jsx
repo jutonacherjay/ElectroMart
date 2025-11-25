@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function AuthPage() {
@@ -144,6 +145,16 @@ export default function AuthPage() {
             {isSignup ? "Login" : "Sign Up"}
           </span>
         </p>
+
+        {/* Admin Login Link */}
+        <div className="mt-6 pt-4 text-center border-t border-gray-300">
+          <Link
+            to="/admin/login"
+            className="text-sm text-[#a64d79] hover:underline font-semibold"
+          >
+            Login as Admin
+          </Link>
+        </div>
       </div>
 
       {/* 🔥 FLOAT ANIMATION KEYFRAMES */}
