@@ -3,15 +3,15 @@ import { useEffect, useState } from "react";
 import Navbar from "./Components/Navbar";
 import Hero from "./Components/Hero";
 import Categories from "./Components/Categories";
-import AuthPage from "./pages/AuthPage";
-import ProfilePage from "./pages/ProfilePage";
-import AddProduct from "./pages/AddProduct";
-import AllProducts from "./pages/AllProducts";
-import CartPage from "./pages/CartPage";
-import WishlistPage from "./pages/WishlistPage";
-import SellerDashboard from "./pages/SellerDashboard";
-import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
+import AuthPage from "./pages/AuthPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
+import AddProduct from "./pages/AddProduct.jsx";
+import AllProducts from "./pages/AllProducts.jsx";
+import CartPage from "./pages/CartPage.jsx";
+import WishlistPage from "./pages/WishlistPage.jsx";
+import SellerDashboard from "./pages/SellerDashboard.jsx";
+import AdminLogin from "./pages/AdminLogin.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
 
 function AppContent() {
   const [user, setUser] = useState(null);
