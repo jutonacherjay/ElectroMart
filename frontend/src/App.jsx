@@ -41,11 +41,12 @@ function AppContent() {
       {user && !isAdminRoute && <Navbar />}
       
       <Routes>
+        {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
-        {!user && <Route path="*" element={<AuthPage />} />}
-        {user && (
+        {/* User Routes */}
+        {user ? (
           <>
             <Route
               path="/"
@@ -64,6 +65,8 @@ function AppContent() {
             <Route path="/wishlist-page" element={<WishlistPage/>} />
             <Route path="/seller-dashboard" element={<SellerDashboard/>} />
           </>
+        ) : (
+          <Route path="*" element={<AuthPage />} />
         )}
       </Routes>
     </>
