@@ -10,11 +10,32 @@ export default function AdminLogin() {
     setError("");
     setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const res = await fetch("https://electromart-backend-m2oz.onrender.com/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+      
+      localStorage.setItem("adminToken", data.token);
+      localStorage.setItem("admin", JSON.stringify(data.admin));
+      
+      window.location.href = "/admin/dashboard";
+    } catch (err) {
+      setError(err.message || "Login failed");
+    } finally {
       setLoading(false);
-      setError("Demo mode - actual login would redirect");
-    }, 3000);
+    }
+  };
+
+  const handleBack = () => {
+    window.location.href = "/";
   };
 
   return (
@@ -107,8 +128,9 @@ export default function AdminLogin() {
 
           <div className="mt-4 text-center">
             <button
-              className="text-indigo-600 hover:text-indigo-700 font-semibold text-sm"
+              onClick={handleBack}
               disabled={loading}
+              className="text-indigo-600 hover:text-indigo-700 font-semibold text-sm disabled:opacity-50"
             >
               ← Back to Homepage
             </button>
