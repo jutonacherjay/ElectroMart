@@ -104,7 +104,7 @@ export default function AdminLogin() {
 
           <div className="mt-4 text-center">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/dashboard")}
               className="text-indigo-600 hover:text-indigo-700 font-semibold text-sm"
             >
               ← Back to Homepage
