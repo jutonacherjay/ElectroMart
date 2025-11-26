@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function AdminLogin() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -11,31 +14,17 @@ export default function AdminLogin() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://electromart-backend-m2oz.onrender.com/api/admin/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Login failed");
-      }
+      const res = await axios.post("https://electromart-backend-m2oz.onrender.com/api/admin/login", form);
       
-      localStorage.setItem("adminToken", data.token);
-      localStorage.setItem("admin", JSON.stringify(data.admin));
+      localStorage.setItem("adminToken", res.data.token);
+      localStorage.setItem("admin", JSON.stringify(res.data.admin));
       
-      window.location.href = "/admin/dashboard";
+      navigate("/admin/dashboard");
     } catch (err) {
-      setError(err.message || "Login failed");
+      setError(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleBack = () => {
-    window.location.href = "/";
   };
 
   return (
@@ -62,7 +51,7 @@ export default function AdminLogin() {
             </div>
           )}
 
-          <div className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Email Address
@@ -73,7 +62,6 @@ export default function AdminLogin() {
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500 transition"
-                disabled={loading}
                 required
               />
             </div>
@@ -88,78 +76,42 @@ export default function AdminLogin() {
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500 transition"
-                disabled={loading}
                 required
               />
             </div>
 
             <button
-              onClick={handleSubmit}
+              type="submit"
               disabled={loading}
-              className={`w-full py-3 rounded-lg font-bold text-white transition transform relative overflow-hidden ${
+              className={`w-full py-3 rounded-lg font-bold text-white transition transform hover:scale-105 ${
                 loading
-                  ? "bg-gradient-to-r from-indigo-600 to-purple-600"
-                  : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl hover:scale-105"
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
               }`}
             >
-              {loading ? (
-                <div className="flex items-center justify-center gap-3">
-                  {/* Animated Loader */}
-                  <div className="relative w-6 h-6">
-                    {/* Outer rotating ring */}
-                    <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-white border-r-white opacity-80"
-                      style={{animation: 'spin 1s linear infinite'}} />
-                    
-                    {/* Middle rotating ring (reverse) */}
-                    <div className="absolute inset-1 rounded-full border-2 border-transparent border-b-white border-l-white opacity-60"
-                      style={{animation: 'spin 1.5s linear reverse infinite'}} />
-                    
-                    {/* Inner pulsing circle */}
-                    <div className="absolute inset-2 rounded-full bg-white opacity-30"
-                      style={{animation: 'pulse 2s ease-in-out infinite'}} />
-                  </div>
-                  <span>Authenticating...</span>
-                </div>
-              ) : (
-                "Login as Admin"
-              )}
+              {loading ? "Logging in..." : "Login as Admin"}
             </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
+              {/* Default Credentials: <br /> */}
+              {/* <span className="font-mono bg-gray-100 px-2 py-1 rounded">admin@electromart.com</span>
+              <br />
+              <span className="font-mono bg-gray-100 px-2 py-1 rounded">admin123</span> */}
+            </p>
           </div>
 
           <div className="mt-4 text-center">
             <button
-              onClick={handleBack}
-              disabled={loading}
-              className="text-indigo-600 hover:text-indigo-700 font-semibold text-sm disabled:opacity-50"
+              onClick={() => navigate("/")}
+              className="text-indigo-600 hover:text-indigo-700 font-semibold text-sm"
             >
               ← Back to Homepage
             </button>
           </div>
         </div>
       </div>
-
-      {/* CSS animations */}
-      <style>{`
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-        
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 0.3;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.6;
-            transform: scale(1.2);
-          }
-        }
-      `}</style>
     </div>
   );
 }
