@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function AuthPage() {
   const [isSignup, setIsSignup] = useState(true);
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false); // 🔥 NEW
+  const [loading, setLoading] = useState(false); // 🔥 For loading overlay
 
   const resetForm = () => {
     setFormData({ name: "", email: "", password: "" });
@@ -17,8 +17,7 @@ export default function AuthPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
-    setLoading(true); // 🔥 Show loading on Login
+    setLoading(true); // 🔥 Show full-screen loading overlay
 
     try {
       const url = isSignup
@@ -28,30 +27,61 @@ export default function AuthPage() {
       const response = await axios.post(url, formData);
 
       if (isSignup) {
-        // 🔥 Sweet success alert
-        alert("🎉 Signup Successful! Please Login.");
+        // 🔥 SweetAlert2 Success Popup
+        Swal.fire({
+          title: "Account Created!",
+          text: "Signup successful! Please login now.",
+          icon: "success",
+          confirmButtonColor: "#a64d79",
+        });
 
         setIsSignup(false);
         resetForm();
       } else {
-        // login success
+        // 🔥 Store user + token
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
 
-        // reload page after login
-        window.location.reload();
+        // 🔥 Toast (Top right)
+        Swal.fire({
+          toast: true,
+          icon: "success",
+          title: "Logged in successfully!",
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1200);
       }
     } catch (err) {
-      setMessage(err.response?.data?.message || "Error occurred!");
+      // 🔥 Error Toast
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        title: err.response?.data?.message || "Something went wrong!",
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 2500,
+      });
     } finally {
-      setLoading(false); // 🔥 stop loading
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen relative flex items-center justify-center bg-white px-4">
 
-      {/* Background Icons */} 
+      {/* 🔥 Full-screen Loading Overlay */}
+      {loading && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      {/* Background Icons */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[
           "🔌","🤖","🛠️","🔋","📟","💡",
@@ -69,13 +99,11 @@ export default function AuthPage() {
         ))}
       </div>
 
-      {/* Card */}
+      {/* CARD */}
       <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl relative z-10 animate-fadeIn">
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
           {isSignup ? "Create Account" : "Welcome Back"}
         </h2>
-
-        {message && <p className="text-center text-red-500 mb-4">{message}</p>}
 
         <form onSubmit={handleSubmit} autoComplete="off" className="space-y-6">
 
@@ -117,31 +145,24 @@ export default function AuthPage() {
             />
           </div>
 
-          {/* 🔥 Button with loading state */}
           <button
             type="submit"
-            className="w-full bg-[#a64d79] text-white p-3 rounded-xl font-semibold 
-                       hover:scale-105 transition duration-300 active:scale-95"
             disabled={loading}
+            className="w-full bg-[#a64d79] text-white p-3 rounded-xl font-semibold hover:scale-105 transition duration-300 active:scale-95"
           >
-            {loading ? (
-              <span className="flex justify-center items-center gap-2">
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                Loading...
-              </span>
-            ) : (
-              isSignup ? "Sign Up" : "Login"
-            )}
+            {isSignup ? "Sign Up" : "Login"}
           </button>
         </form>
 
         <p className="text-sm text-center mt-5">
           {isSignup ? "Already have an account?" : "Don't have an account?"}{" "}
-          <span className="text-[#a64d79] cursor-pointer hover:underline"
+          <span
+            className="text-[#a64d79] cursor-pointer hover:underline"
             onClick={() => {
               setIsSignup(!isSignup);
               resetForm();
-            }}>
+            }}
+          >
             {isSignup ? "Login" : "Sign Up"}
           </span>
         </p>
